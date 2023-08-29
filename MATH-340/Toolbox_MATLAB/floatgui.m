@@ -143,4 +143,4 @@ end
 % Exercise:
 % How many "floating point" numbers are in the set?
 % Complete this statement.
-% text(.9*xmax,2,num2str(???)
+% text(.9*xmax,2,num2str(???))
