@@ -1,5 +1,5 @@
 function floatgui(callbackarg)
-%FLOATGUI  Show structure of floating point numbers.
+%  FLOATGUI  Show structure of floating point numbers.
 %  The set of positive model floating point numbers is determined
 %  by three parameters: t, emin, and emax.  It is the set of rational
 %  numbers of the form x = (1+f)*2^e where f = (integer)/2^t,
@@ -143,4 +143,5 @@ end
 % Exercise:
 % How many "floating point" numbers are in the set?
 % Complete this statement.
-% text(.9*xmax,2,num2str(???))
+total_floats = 2^(t+1) * (emax - emin + 1);
+text(.9*xmax,2,num2str(total_floats));
