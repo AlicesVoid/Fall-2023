@@ -46,7 +46,9 @@ function isPosDef(M)
 end
 %}
 
+
 % Method for Problem 6:
+%{
 x = 3;
 I = eye(x,x);
 O = ones(x);
@@ -56,8 +58,8 @@ A = T';
 n = 1
 k = 1
 
-% while loop for 2.6.b
-%{
+% while loop for 2.6.a
+
 while k < 1/eps
     k = n * 2^(n-1);
     fprintf('n = %d, k = %d\n', n, k);
@@ -65,10 +67,14 @@ while k < 1/eps
     % Update n for the next iteration
     n = n + 1;
 end
-%}
 
-% testing for 2.6.c
+
+% testing for 2.6.b
 x = [0.001; 0.01; 0.1;];
 b = A*x;
 disp(b);
+%}
+
+
+
 
