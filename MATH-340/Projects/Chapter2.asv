@@ -54,14 +54,13 @@ S = 2*I-O;
 T = triu(S);
 A = T';
 n = 1
-k = 1
 
 % Start the while loop
-while k < 1/eps
+while n < 1/eps
     k = n * 2^(n-1);
     fprintf('n = %d, k = %d\n', n, k);
     
     % Update n for the next iteration
-    n = n + 1;
+    n = n - 1;
 end
 
