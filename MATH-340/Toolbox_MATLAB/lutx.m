@@ -1,14 +1,13 @@
-function [L,U,p] = lutx(A)
-%LUTX  Triangular factorization, textbook version
-%   [L,U,p] = lutx(A) produces a unit lower triangular matrix L,
-%   an upper triangular matrix U, and a permutation vector p,
-%   so that L*U = A(p,:)
-
-%   Copyright 2014 Cleve Moler
-%   Copyright 2014 The MathWorks, Inc.
+function [L,U,p,sig, detA] = lutx(A)
+%LU Triangular factorization
+% [L,U,p,sig] = lutx(A) computes a unit lower triangular
+% matrix L, an upper triangular matrix U, a permutation
+% vector p, and a scalar sig, so that L*U = A(p,:) and
+% sig = +1 or -1 if p is an even or odd permutation.
 
 [n,n] = size(A);
 p = (1:n)';
+sig = 1; % Initialize sig to +1
 
 for k = 1:n-1
 
@@ -23,6 +22,7 @@ for k = 1:n-1
       if (m ~= k)
          A([k m],:) = A([m k],:);
          p([k m]) = p([m k]);
+         sig = -sig; % Flip the sign if a row swap occurs
       end
 
       % Compute multipliers
@@ -35,6 +35,17 @@ for k = 1:n-1
    end
 end
 
-% Separate result
+%Separate result
+
 L = tril(A,-1) + eye(n,n);
 U = triu(A);
+
+% MYDET Compute the determinant of a square matrix A using LU decomposition.
+% detA = mydet(A) computes the determinant of A.
+
+% Compute the determinant using the diagonal elements of U and the sign sig
+detA = sig * prod(diag(U));
+
+end
+
+
