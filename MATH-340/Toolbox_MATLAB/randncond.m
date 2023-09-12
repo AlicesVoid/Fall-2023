@@ -5,8 +5,8 @@
 
 nmax = 100;
 n = 2:nmax;
-kappalo = n.^(1/2);
-kappahi = 500*n.^3;
+kappalo = n.^(7/5);
+kappahi = 500*n.^(7/5);
 
 shg
 clf reset
