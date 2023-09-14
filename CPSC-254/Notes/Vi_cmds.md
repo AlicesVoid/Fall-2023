@@ -9,23 +9,21 @@
 ## Getting In and Out of Vi:
 - `:`  
     - Enters command mode in Vi, allowing you to input various commands.
-- `:x`  
+- `:x | :wq`  
     - Saves changes made to the document and exits Vi.
-- `:wq`  
-    - Similar to `:x`, it writes (saves) the changes and then quits Vi.
 - `:q`  
     - Quits Vi. If there are unsaved changes, it will warn you.
 - `:q!`  
     - Quits Vi without saving any changes, effectively discarding any modifications made during the current session.
 
 ## Cursor Movement Methods:
-- `j | ^j`  
+- `j | ^j {insert mode}`  
     - Moves the cursor down one line.
-- `k | ^k`  
+- `k | ^k {insert mode}`  
     - Moves the cursor up one line.
-- `h | <backspace>`  
+- `h | backspace {insert mode}`  
     - Moves the cursor one character to the left.
-- `l | <space>`  
+- `l | space  {insert mode}`  
     - Moves the cursor one character to the right.
 - `0`  
     - Moves the cursor to the beginning of the line.
@@ -35,9 +33,9 @@
     - Moves the cursor forward one word.
 - `b`  
     - Moves the cursor backward one word.
-- `^w`
+- `^w {insert mode}`
     - Deletes the word
-- `^i`  
+- `^i {insert mode}`  
     - Indents the cursor
 - `:0` or `:1`  
     - Moves to the beginning of the file.
@@ -107,4 +105,42 @@
     - delete the entire current line
 - `Ndd`  
     - delete the next N lines, starting from the current line
+
+## Copy-Paste Methods:
+- `d | cut`
+    - delete  the specified content, but also stores it in a buffer so you can paste it 
+- `yy` | `yank`  
+    - copy (yank) the current line
+- `Nyy | yNy`  
+    - copy (yank) the next N lines, starting from the current line
+- `p` | `put` | `paste`  
+    - insert (paste) the last yanked or deleted text after the cursor position
+
+## File Search Methods:
+- `/<word>`
+    - search forward for occurrence of `<word>`
+- `?<word>`
+    - search backward for occurrence of `<word>`
+- `n`
+    - repeat the last search in the same direction
+- `N`
+    - repeat the last search in the opposite direction
+- `:.=`
+    - display the current line number
+- `:=`
+    - display the total number of lines in the file
+- `^g`
+    - display the current line number, total number of lines, and filename
+
+## File Saving/Splitting Methods:
+- `:r <filename>`
+    - read and insert the contents of `<filename>` below the current line
+- `:w`
+    - write (save) the current file
+- `:w <filename>`
+    - write (save) the current buffer content to `<filename>`
+- `:##,##w <filename>`
+    - write (save) the specified range of lines (##,##) to `<filename>`
+- `:w! <filename>`
+    - forcefully write (save) the current buffer content to `<filename>`, even if the file exists
 
