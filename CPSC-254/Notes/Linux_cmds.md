@@ -81,4 +81,32 @@
 - `whoami`
     - displays the username of the current user
 
+### Shell-Environment Variables and Commands
+- `env`
+    - Display, set, or remove environment variables; often used to run a command in a modified environment
 
+**Some Key ENV Variables:**
+- `BASHOPTS`
+    - Displays the enabled shell options separated by colons
+- `BASH_VERSION`
+    - The version of the current instance of Bash
+- `BASH_VERSINFO`
+    - An array that holds the version number of the current instance of Bash
+- `COLUMNS`
+    - Width of the terminal in columns
+- `DIRSTACK`
+    - An array containing the current contents of the directory stack
+- `HISTFILESIZE`
+    - The maximum number of lines that the history file can contain
+- `HISTSIZE`
+    - The number of commands to remember in the command history
+- `HOSTNAME`
+    - The name of the current host
+- `IFS`
+    - Internal Field Separator; it's used by the shell to determine how to do word splitting and to split lines
+- `PS1`
+    - Primary prompt string, it determines how your shell prompt looks
+- `SHELLOPTS`
+    - A colon-separated list of enabled shell options
+- `UID`
+    - The numeric user identifier of the current user
