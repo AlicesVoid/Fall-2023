@@ -13,7 +13,7 @@ P_cn = condeig(P);
 %}
 
 % Problem 4:
-
+%{
 % Define the matrix size
 n = 101;
 
@@ -35,3 +35,7 @@ ylabel('Eigenvalue');
 % Title and grid
 title('Eigenvalues of Tridiagonal Matrix A');
 grid on;
+%}
+
+% Problem 5:
+
