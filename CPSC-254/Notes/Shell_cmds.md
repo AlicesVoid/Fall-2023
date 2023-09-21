@@ -9,6 +9,60 @@
     - Outputs a string or variables to the console.
 - `grep <pattern> <file>`  
     - Searches for a specified pattern in a file or input stream and outputs matching lines.
+- `name_of_function() { <FUNCTION_BODY> }`  
+    - Defines a function.
+- `name_of_function $arg1 $arg2 ... $argN`  
+    - Calls the function with arguments.
+
+
+### Logical Operators:
+- `-o <option>`  
+    - Logical OR; used to combine multiple conditions.
+- `! <expr>`  
+    - Logical NOT; negates the condition that follows.
+- `-a <expr>`  
+    - Logical AND; used to combine multiple conditions, though more commonly `&&` is used.
+- `-o <expr>`  
+    - Logical OR; used to combine multiple conditions, though more commonly `||` is used.
+- `-eq <arg1> <arg2>`  
+    - Checks if `arg1` is equal to `arg2`.
+- `-ne <arg1> <arg2>`  
+    - Checks if `arg1` is not equal to `arg2`.
+- `-lt <arg1> <arg2>`  
+    - Checks if `arg1` is less than `arg2`.
+- `-le <arg1> <arg2>`  
+    - Checks if `arg1` is less than or equal to `arg2`.
+- `-gt <arg1> <arg2>`  
+    - Checks if `arg1` is greater than `arg2`.
+- `-ge <arg1> <arg2>`  
+    - Checks if `arg1` is greater than or equal to `arg2`.
+- `$?`  
+    - Contains the exit status of the last command executed.
+
+
+### Code Structures: 
+- `test <condition> | [ <expression> ];`  
+    - Evaluates a conditional expression, often used in if statements.
+- `while <condition>; do <commands>; done`  
+    - Loop that continues as long as the condition is true, executing the commands each iteration.
+- `if <condition>; elif <cond> <expr>; else <expr>; fi`  
+    - Conditional structure to execute commands if the condition is true.
+- `case <variable> in <pattern1>) <commands1> ;; <pattern2>) <commands2> ;; *) <default_commands> ;; esac`  
+    - Pattern matching structure, executes different commands based on the value of a variable.
+
+### String Operators:
+- `-z <string>`  
+    - Checks if the string is empty (length is zero).
+- `-n <string>`  
+    - Checks if the string is not empty (length is greater than zero).
+- `<string1> = <string2>`  
+    - Checks if `string1` is equal to `string2`.
+- `<string1> != <string2>`  
+    - Checks if `string1` is not equal to `string2`.
+- `<string1> < <string2>`  
+    - Checks if `string1` sorts before `string2` lexicographically.
+- `<string1> > <string2>`  
+    - Checks if `string1` sorts after `string2` lexicographically.
 
 ### Streaming Data Methods:
 - `$<n>`  
@@ -23,17 +77,6 @@
     - Here document; redirects standard input from the lines following the command until the delimiter is reached.
 - `< <file>`  
     - Redirects standard input to read from a file.
-
-
-### Logic Structures: 
-- `test <condition>`  
-    - Evaluates a conditional expression, often used in if statements.
-- `while <condition>; do <commands>; done`  
-    - Loop that continues as long as the condition is true, executing the commands each iteration.
-- `if <condition>; elif <cond> <expr>; else <expr>; fi`  
-    - Conditional structure to execute commands if the condition is true.
-- `case <variable> in <pattern1>) <commands1> ;; <pattern2>) <commands2> ;; *) <default_commands> ;; esac`  
-    - Pattern matching structure, executes different commands based on the value of a variable.
 
 ### File Operators:
 - `-a <file>`  
@@ -82,3 +125,5 @@
     - Checks if `file1` is older than `file2`.
 - `-ef <file1> <file2>`  
     - Checks if `file1` and `file2` refer to the same device and inode numbers, essentially if they are the same file.
+
+
