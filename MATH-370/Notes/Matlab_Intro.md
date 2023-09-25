@@ -15,6 +15,29 @@
 - `F9`
     - used to execute the currently selected or highlighted code section or line. (WINDOWS)
 
+## Matrices 
+- `A = [a_11 a12; a21 a22]`
+    - Creates a 2x2 Matrix named A.
+- `A(r, c)`
+    - Accesses the element in row r and column c of matrix A.
+- `A_transpose = A'`
+    - Creates the transpose of matrix A, denoted as A_transpose.
+- `length(A)`
+    - Returns the length of the largest dimension of matrix A.
+- `size(A) | size(A, 1) | size(A, 2)`
+    - Returns the dimensions (number of rows and columns) of matrix A.
+- `A .* A | .^ | ./`
+    - multiplies (powers, divides) matrix A by itself BY COMPONENT 
+    - `A * A` would do Standard Matrix Multiplication 
+
+## Strings
+- `s1 = 'string'`
+    - Assigns the string "string" to the variable s1.
+- `s3 = [s1 s2]`
+    - Concatenates the strings stored in s1 and s2 to create a new string stored in s3.
+- `num2str(pi)`
+    - Converts the mathematical constant pi to a string representation.
+
 ## Graphing
 - `x = linspace(-1, 1, 50)`
     - Creates an array x with 50 evenly spaced values ranging from -1 to 1.
@@ -36,29 +59,13 @@
 - `subplot(a, b, n)`
     - Sets up the next plot (a rows, b column(s) of plots, next graph in location n)
 
-
-## Matrices 
-- `A = [a_11 a12; a21 a22]`
-    - Creates a 2x2 Matrix named A.
-- `A(r, c)`
-    - Accesses the element in row r and column c of matrix A.
-- `A_transpose = A'`
-    - Creates the transpose of matrix A, denoted as A_transpose.
-- `length(A)`
-    - Returns the length of the largest dimension of matrix A.
-- `size(A) | size(A, 1) | size(A, 2)`
-    - Returns the dimensions (number of rows and columns) of matrix A.
-- `A .* A | .^ | ./`
-    - multiplies (powers, divides) matrix A by itself BY COMPONENT 
-    - `A * A` would do Standard Matrix Multiplication 
-
 ## Functions 
 - `function y = myfunc(x)`
     - Defines a MATLAB function named "myfunc" that takes an input argument x and returns an output y.
     - Everything Below This Statement is Function Body
         - (i.e: x = [2 4 6]; y = x .* x) -> takes in x, outputs y = [4, 16, 36]
 
-## Plot Styling "plot(x,y,'style')"
+## Plot Styling: plot(x,y,'style')
 - `-.`
     - Dotted line style in a plot.
 - `-`
