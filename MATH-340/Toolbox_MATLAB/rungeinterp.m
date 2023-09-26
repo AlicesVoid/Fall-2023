@@ -58,16 +58,24 @@ else
    set(h.minus,'enable','on');
 end
 
-if n == 1;
+% Customize the distribution of interpolation points.
+% Here, we use Chebyshev nodes instead of equally spaced nodes.
+if n == 1
    x = 0;
 else
-   x = -1 + 2*(0:n-1)/(n-1);
+   % Generate Chebyshev nodes
+   x = cos((2*(0:n-1) + 1)*pi / (2*n));
 end
+
+% Calculate corresponding function values and update the plot.
 y = rungerat(x);
 u = get(h.plot(1),'xdata');
 v = polyinterp(x,y,u);
+
 set(h.plot(2),'xdata',x,'ydata',y);
 set(h.plot(3),'xdata',u,'ydata',v);
+
+
 
 % ------------------------
 
