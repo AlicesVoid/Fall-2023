@@ -14,7 +14,6 @@
 - `name_of_function $arg1 $arg2 ... $argN`  
     - Calls the function with arguments.
 
-
 ### Logical Operators:
 - `-o <option>`  
     - Logical OR; used to combine multiple conditions.
@@ -39,13 +38,12 @@
 - `$?`  
     - Contains the exit status of the last command executed.
 
-
 ### Code Structures: 
 - `test <condition> | [ <expression> ];`  
     - Evaluates a conditional expression, often used in if statements.
 - `while <condition>; do <commands>; done`  
     - Loop that continues as long as the condition is true, executing the commands each iteration.
-- `if <condition>; elif <cond> <expr>; else <expr>; fi`  
+- `if <cond>; then <expr>; elif <cond>; then <expr>; else <expr>; fi`  
     - Conditional structure to execute commands if the condition is true.
 - `case <variable> in <pattern1>) <commands1> ;; <pattern2>) <commands2> ;; *) <default_commands> ;; esac`  
     - Pattern matching structure, executes different commands based on the value of a variable.
