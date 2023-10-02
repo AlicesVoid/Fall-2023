@@ -36,13 +36,168 @@
 - NOTE:    
     - $f$ implies finite Precision
     - $e$ implies finite Range
+    - Floating-Point Values have Discrete Spacing/Max/Min
+
+### Fractional Components
+**$f \sum_{j=1}^{\infty}\dfrac{d_j}{2^j}$**
+- Same as $f = .d_1d_2d_3...$ 
+    - d is a 0 or a 1
+- The 1/10th Issue:
+    - $0.1 \neq$ some series of binary frac.s 
+        - Instead we get something like $1.1\overline{0011} * 2^{-3}$
+
+### EPS 
+**Distance from 1 to the Next-Largest Floating Point**
+- No Floats between 1 and 1+eps
+    - Double Precision 
+        - $\implies eps = 2^{-52} =$ 2.2204e-16 
+        - (52 bits for f, 11 for e, 1 for $\pm$)
+- **NOTE:** 
+    - EPS ONLY MATTERS IF WE'RE ROUNDING FLOATS (NOT DECLARING THEM)
+
+### Real Numbers
+**$(1+f)2^e \leq r \leq (1+f+eps)2^e$**
+- Real Numbers (r) in the Range of Floats 
+    - $realmin = 2^{-1022}$
+    - $realmax = (2-eps)2^{1023}$
+- NOTE:
+    - EPS is the Max. Roundoff Error when r is Rounded to the Nearest Float
 
 -------
 # CHAPTER 2 
+
+### Linear System Solutions 
+**$Ax = b$**
+- Matlab Backslash Operator: $x = A$ \ $b$
+    - $xA = b \implies x = b/A$
+- Solution Process: 
+    1. Gaussian Elimination 
+        - Simplify The Matrix
+    2. Back-Substitution 
+        - Find Actual Values via. Substitution
+
+### LU Factorization
+**$Ax = b \implies LU = PA \implies LU = Pb$**
+- Solution Process: 
+    1. $Ly = Pb$ 
+        - Forward Sub 
+    2. $Ux = y$
+        - Backwards Sub
+
+**Permutation Matrix $P$:**
+- Matrix of 1's and 0's 
+    - $P^{-1} = P^T$
+- Importance: 
+    - We can Change Column Orders 
+    - We can Condition our Matrices Values
+        - Avoid Awkward SigFig Substitution Moments
+
+### Partial Pivoting
+**GOAL:**
+- Get the **Maximal Element In The Pivot Position** Every Time 
+    - Lets us Better Represent the Other Values when Simplifying 
+        - (Ch.2 Slide 14)
+- **MEANING:**
+    - guarantees that the multipliers will all be less than or equal to 1
+        - This guarantees a small residual, and a “satisfactory” solution in a sense that can be made rigorous
+
+
+### Rounoff Errors 
+- **Error:**
+    - $e = x - x_*$
+- **Residual:** 
+    - $r = b - Ax_*$
+- **NOTE:** 
+    - Small Residual $\neq$ Small Error 
+        - Keep in mind that these are LINES with MULTIPLE INTERSECTIONS
+
+### Conditioning
+**Signs of Ill-Conditioning:**
+1. Determinant is Small 
+    - (not enough evidence on it's own)
+2. **Norm** of a Matrix
+    - $||A||$ is the Maximal "Stretch" of a vector when A is applied:
+    - $||A|| = \max_{x\neq0}\dfrac{||Ax||}{||x||}$
+    - if Invertible:
+        - $||A^{-1}|| = (\min_{x\neq0}\dfrac{||Ax||}{||x||})^{-1}$
+3. **Condition Number:**
+    - $\kappa(A) = ||A||||A^{-1}||$
+        - Implies: 
+            - $\dfrac{||\delta x||}{||x||}\leq\kappa(A)*\dfrac{||\delta b||}{||b||}$ 
+        - NOTE: 
+            - $\delta$ is some value where $A \delta x = \delta b$
+    - Properties:
+        1. $\kappa(A) \geq 1$
+        2. $\kappa(P) = 1$
+        3. $\kappa(cA) = \kappa(A)$
+        4. If D is Diagonal:
+            - $\kappa(D) = \dfrac{\max |d_{ii}|}{\min |d_{ii}|}$
+        5. Well-Conditoned: 
+            - Closer $\kappa(A)$ is to 1 indicates better conditioning
+
+### IN MATLAB: 
+**Conditioning:**
+- `cond(A, p)`
+    - p-norm condition number, where $1 \leq p \leq \infty$
+    - Expensive
+- `condest(A)`
+    - lower-bound c for the 1-norm condition of square-matrix A
+    - Cheap
+
 -------
 # CHAPTER 10
+
+### Spectral Theorem 
+**$A = QDQ^T$**
+- Requirements: 
+    - A is a Real Symmetric Matrix:
+        - we know Eigenvalues are Real 
+        - We know Eigenvectors are Orth. 
+
+### Singular Value Decompositon 
+**$A = U\Sigma V^T = \sum _{i=1}^{r}\sigma_i*u_i*v_i^T$**
+- Requirements: 
+    - A is m x n matrix w/ Real Entries: 
+        - m x m orth. matrix U exists 
+        - n x n orth. matrix V exists 
+        - m x n diag. matrix $\Sigma$ exists
+            - Diagonal Values of $\Sigma$ are called **SINGULAR VALUES**
+- Significance: 
+    - $Au_i = \sigma_iv_i$
+- **NOTE:** 
+    - Singular Values $\sigma_i$ are Square Roots of Eigenvalues of $A^TA$
+        - (always positive)
+    - Vectors $v_i$ are the eigenvectors of $A^TA$ 
+        - (right singular)
+    - Vectors $u_i$ are the eigenvectors of $AA^T$ 
+        - (left singular)
+    - If A is Complex: 
+        - Same result applies, but U and V are unitary: $A = U\Sigma V ^*$
+
+
+### SVD Applications 
+**Inverse of Any Matrix**
+- Pseudo-Inverse: 
+    - $\Sigma^+ \implies \sigma_{1,2...r}^{-1}$ for the whole matrix
+    - $A^+ = V\Sigma^+U^T$
+        - $... = \sum _{i=1}^{r}\sigma_i^{-1}*v_i*u_i^T$
+    - Basically, we just processed matrix A into it's Inverse 
+        - We can use this to efficiently map A with parameters: 
+            - (i.e: least squares solution of $Ax = b$ w/ min. norm is $x = A^+b$)
+            - (i.e: projection onto range of A is $P = AA^+$)
+
+**Approx. a Low-Rank Matrix:**
+- $A_k = U\Sigma_kV^T$
+    - $A_k$ is the closest rank k matrix to A
+    - Basically, we just compressed matrix A 
+        - if B is another m x n rank k matrix, 
+            - then $||A-B|| \geq ||A-A_k||$
+
 -------
 # CHAPTER 3
+
+honestly just check your other notes- they're chilling
+
 -------
 # CHAPTER 4
 
