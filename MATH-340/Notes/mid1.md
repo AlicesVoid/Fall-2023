@@ -1,13 +1,49 @@
 # MIDTERM 1 REVIEW GUIDE WHAAAA 
+-------
+# INTRO
 
+### Why is NA Important?
+- wwts that approximate mathematics can be conditioned 
+    - **Important for Accuracy and Precision**
+        - Sig-Figs & Machine Numbers 
+            - Mantissa nd Exponent need to be Carefully Considered 
+            - Prone to Roundoff Errors 
+            - Cancelling-Out Similar Values 
+        - Rewriting Functions for Conditioning 
+            - Different Representations work w/ Different Sig-Figs 
+            - Fixing Ill-Conditioned Problems to Better Represent Them w/ Machines
+        - Approximations
+            - Finding some way to represent True Approximation Accuracy
+    - **Important for Efficiency** 
+        - Repeating Math with Some Pattern Multiple Times 
+            - We can simplify things like these to better control our outcome
+            - We can simplify things like these to reduce our overall-errors 
+    - **Important for Re-Framing Math Problems** 
+        - Some Integrals require Numerical Expression 
+            - Symbolic Expression becomes Unrealistic to Real-World Problems
+        - EXAMPLE: 
+            - Initial Value Problems are Re-Framing Problems
+
+-------
 # CHAPTER 1
 
+### Floating Point Numbers
+**Binary Math:**
+- $x = \pm(1+f) * 2^e$
+    - $0 \leq f < 1$
+    - $f = (\mathbb{Z} < 2^{52}) / 2^{52}$
+    - $e = \mathbb{Z} \in [-1022, 1023]$
+- NOTE:    
+    - $f$ implies finite Precision
+    - $e$ implies finite Range
+
+-------
 # CHAPTER 2 
-
+-------
 # CHAPTER 10
-
+-------
 # CHAPTER 3
-
+-------
 # CHAPTER 4
 
 ### Bisection:
