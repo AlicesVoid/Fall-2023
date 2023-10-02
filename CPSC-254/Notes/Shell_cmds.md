@@ -67,6 +67,8 @@
     - Refers to the nth argument passed to the script or function. `$1` is the first argument, and so on.
 - `sed <expression> <file>`  
     - Stream editor for filtering and transforming text.
+- `grep <expression> <file>`
+    - Stream editor for printing matching sections of text. 
 - `>> <file>`  
     - Appends standard output to a file, creating the file if it doesn't exist.
 - `> <file>`  

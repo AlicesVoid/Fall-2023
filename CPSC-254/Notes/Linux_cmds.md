@@ -9,11 +9,11 @@
     - system and application log files
 
 ### Config and User Info
-- `passwd`  
+- `/etc/passwd`  
     - contains user account information
-- `shadow`  
+- `/etc/shadow`  
     - contains encrypted user passwords
-- `grub`  
+- `/etc/grub`  
     - Grand Unified Bootloader configuration and files
 
 
