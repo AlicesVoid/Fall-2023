@@ -65,4 +65,55 @@ disp(sol);
 %}
 
 % Question 10:
+%{
+% Bessel Functions
+syms x;
+j = besselj(0, x);
+y = bessely(0, x);
+b = j - y;
+
+% Solutions and Guesses
+s_j = 0:1:9;
+s_y = 0:1:9;
+s_b = 0:1:9;
+g_j = 0:pi:11*pi;
+g_y = 0:pi:11*pi;
+g_b = 0:pi:11*pi;
+
+% Iterate To Find Zeroes of J_0, Y_0, and Intersecting Points
+for i = 1:10
+    % Use fzerotx to find a solution within [guess(i), guess(i+1)]
+    s_j(i) = fzerotx(matlabFunction(j), [g_j(i), g_j(i+1)]);
+    s_y(i) = fzerotx(matlabFunction(y), [g_y(i), g_y(i+1)]);
+    s_b(i) = fzerotx(matlabFunction(b), [g_b(i), g_b(i+1)]);
+end
+
+% Plot Your Results
+figure;
+hold on;
+
+% Plot J0(x) in red
+fplot(matlabFunction(j), [0, 10*pi], 'r', 'DisplayName', 'J0(x)');
+
+% Plot Y0(x) in blue
+fplot(matlabFunction(y), [0, 10*pi], 'b', 'DisplayName', 'Y0(x)');
+
+% Plot the first ten zeros of J0(x) in red
+plot(s_j, zeros(1, 10), 'ro', 'DisplayName', 'Zeros of J0(x)');
+
+% Plot the first ten zeros of Y0(x) in blue
+plot(s_y, zeros(1, 10), 'bo', 'DisplayName', 'Zeros of Y0(x)');
+
+% Plot the intersection points in magenta
+intersection_values = besselj(0, s_b);
+plot(s_b, intersection_values, 'mo', 'DisplayName', 'Intersection Points');
+
+
+hold off;
+
+xlabel('x');
+ylabel('Function Values');
+title('Bessel Functions and Their Zeroes');
+legend;
+%}
 
