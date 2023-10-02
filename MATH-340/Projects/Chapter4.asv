@@ -25,20 +25,21 @@ disp(['Complex root found: x = ', num2str(root)]);
 %}
 
 % Question 3: 
-%
+%{
 % Init. Polynomial 
-p = @(x) 816*x^3 - 3835*x^2 + 6000*x - 3125;
+syms x;
+p_s = 816*x^3 - 3835*x^2 + 6000*x - 3125;
+p = matlabFunction(p_s);
 
 %Exact Roots
-R = roots(p);
-
-% Newton's Method: guess_0 = 1.5
-g = 1.5;
-options = optimoptions('fsolve', 'Display', 'off', 'TolFun', 1e-12);
-N = fsolve(p, g, options);
-
-% Secant Method: x0 = 
+R = roots(sym2poly(p_s));
 
 % FzeroTX along [1,2]
 F = fzerotx(p, [1,2]);
-%
+%}
+
+% Question 9:
+f = @(x) x - tan(x);
+
+
+
