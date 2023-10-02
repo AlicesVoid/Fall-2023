@@ -24,6 +24,61 @@
         - EXAMPLE: 
             - Initial Value Problems are Re-Framing Problems
 
+### Important Matlab Tools: 
+**Chapter 1:**
+- `ones(rows, cols)`
+    - Creates a matrix of size `rows` by `cols` filled with ones.
+- `eye(n)`
+    - Generates an `n`-by-`n` identity matrix with ones on the main diagonal and zeros elsewhere.
+- `triu(A, k)`
+    - Extracts the upper triangular part of the matrix `A`, optionally shifting it by `k` diagonals, and sets the lower triangular elements to zero.
+
+**Chapter 2:**
+- `A\b`
+    - Solves a system of linear equations represented as `A*x = b`, where `A` is a matrix of coefficients and `b` is a vector or matrix of constants. It returns the solution vector `x`.
+- `A/b`
+    - Performs left matrix division for solving linear equations represented as `A*X = b`, where `A` is a matrix of coefficients and `b` is a matrix of constants. It returns the solution matrix `X`.
+- `A'`
+    - Computes the transpose of matrix `A`, reflecting it across its main diagonal, effectively swapping rows and columns.
+- `spdiag(v, k)`
+    - Constructs a sparse diagonal matrix using the vector `v` as the main diagonal and an optional `k` as the diagonal offset. It returns a sparse matrix with the specified diagonal elements.
+- `tridisolve(A, B)`
+    - Solves a tridiagonal linear system represented by the coefficient matrix `A` and the constant vector or matrix `B`. It efficiently computes the solution to the tridiagonal system.
+
+**Chapter 10:**
+- `eig(A)`
+    - Computes the eigenvalues of a square matrix `A`. It returns a vector containing the eigenvalues.
+- `condeig(A)`
+    - Computes the condition number of the eigenvalues of a square matrix `A`. It provides information about the sensitivity of the eigenvalues to perturbations in the matrix `A`.
+- `svd(A)`
+    - Computes the Singular Value Decomposition (SVD) of a matrix `A`. It decomposes the matrix into three matrices, `U`, `S`, and `V`, such that `A = U * S * V'`, where `U` and `V` are orthogonal matrices, and `S` is a diagonal matrix containing the singular values of `A`.
+
+**Chapter 3:**
+- `piecelin(x, y, xi)`
+    - Performs piecewise linear interpolation on the data points `(x, y)` and evaluates the interpolated values at the specified `xi` points.
+- `polyinterp(x, y, xi, n)`
+    - Interpolates data points `(x, y)` using a polynomial of degree `n` and evaluates the interpolated values at the specified `xi` points.
+- `spline(x, y, xi)`
+    - Uses cubic spline interpolation to estimate values at `xi` points based on the given data points `(x, y)`.
+- `pchip(x, y, xi)`
+    - Applies piecewise cubic Hermite interpolation to estimate values at `xi` points using the data points `(x, y)`.
+- `polyfit(x, y, n)`
+    - Fits a polynomial of degree `n` to data points `(x, y)` using the least squares method- Returns a Polynomial. 
+- `polyval(p, x)`
+    - Evaluates a polynomial with coefficients defined by the vector `p` at the specified values in vector `x`, returning the corresponding function values.
+
+**Chapter 4:**
+- `solve(eqns, vars)`
+    - Symbolically solves algebraic equations or systems of equations represented by `eqns` for the variables `vars`.
+- `roots(p)`
+    - Computes the roots (solutions) of a polynomial equation defined by the coefficients in vector `p`.
+- `matlabFunction(expr, 'vars')`
+    - Converts symbolic expressions or functions given by `expr` into MATLAB functions that can be evaluated numerically, specifying the variables in the 'vars' argument.
+- `fzero(fun, x0)`
+    - Finds a numerical approximation to a root (zero) of a single-variable function `fun` starting from the initial guess `x0`.
+- `fsolve(fun, x0)`
+    - Solves systems of nonlinear equations numerically by finding the values of the variables that satisfy the system defined by `fun`, starting from the initial guess `x0`.
+
 -------
 # CHAPTER 1
 
