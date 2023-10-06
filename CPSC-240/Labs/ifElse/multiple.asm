@@ -1,37 +1,41 @@
 section .data
-    num     dw 225       ; Unsigned short num
-    mul_15  dw 0         ; Unsigned short mul_15
-    other   dw 0         ; Unsigned short other
+    num db 225          ; 8-bit variable to store the value of num
+    mul_15 db 0         ; 8-bit variable to store mul_15
+    other db 0          ; 8-bit variable to store other
 
 section .text
-    global _start
+global _start
 
 _start:
-    ; Load the value of num into a register (ax)
-    mov     ax, [num]
+    mov al, [num]       ; Load the value of num into AL (8 bits)
+    xor ah, ah           ; Clear AH
 
-    ; Check if num is divisible by 3 (num % 3 == 0)
-    test    ax, 3        ; Check if the two least significant bits are both 0
-    jnz     not_divisible_by_3
+    mov cl, 3            ; Load 3 into CL
+    xor ch, ch           ; Clear CH
 
-    ; Check if num is divisible by 5 (num % 5 == 0)
-    test    ax, 5        ; Check if the least significant bit is 0
-    jnz     not_divisible_by_5
+    div cl               ; Divide AL by 3
+    test ah, ah          ; Check if remainder is non-zero
+    jnz not_divisible    ; Jump if not divisible
 
-    ; If both conditions are met, increment mul_15
-    inc     word [mul_15]
-    jmp     done
+    mov cl, 5            ; Load 5 into CL
+    xor ch, ch           ; Clear CH
 
-not_divisible_by_3:
-    ; If num is not divisible by 3, increment other
-    inc     word [other]
+    mov al, [num]       ; Reload the value of num into AL
+    div cl               ; Divide AL by 5
+    test ah, ah          ; Check if remainder is non-zero
+    jnz not_divisible    ; Jump if not divisible
 
-not_divisible_by_5:
-    ; If num is not divisible by 5, increment other
-    inc     word [other]
+    inc byte [mul_15]   ; Increment mul_15
+    jmp end_program
 
-done:
+not_divisible:
+    inc byte [other]    ; Increment other
+
+end_program:
     ; Exit the program
-    mov     rax, 60      ; syscall number for sys_exit
-    xor     rdi, rdi     ; Exit code 0
-    syscall
+    mov eax, 1           ; syscall number for exit (1)
+    xor ebx, ebx          ; exit code 0
+    int 0x80             ; make the syscall
+
+section .bss
+    ; Define uninitialized variables
