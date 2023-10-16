@@ -24,22 +24,25 @@ global _start
 _start:
     ; Initialization
     mov rsi, 0        ; rsi is the index for the array[]
-    mov rdi, 0        ; rdi is the index for the even[]
 
 parityLoop:
     ; Load array[rsi] into ax
-    movzx ax, word [array + rsi*2]
+    mov ax, [array + rsi*2]
 
     ; Check if even by taking modulo 2
-    ; Using "test" instruction for checking even/odd is efficient as it checks the least significant bit
+    ; Using "test" instruction for checking even/odd as it checks the least significant bit
     test ax, 1
-    jnz notEven       ; Jump if odd
+    jnz storeZero     ; Jump if odd
 
-    ; If even, store into even[] and increment rdi
-    mov [even + rdi*2], ax
-    inc rdi
+    ; If even, store into even[]
+    mov [even + rsi*2], ax
+    jmp next
 
-notEven:
+storeZero:
+    ; Store 0 in even[]
+    mov word [even + rsi*2], 0
+
+next:
     ; Increment rsi
     inc rsi
 
@@ -51,3 +54,4 @@ notEven:
     mov rax, 60       ; syscall: exit
     xor rdi, rdi      ; status 0
     syscall
+
