@@ -25,7 +25,7 @@ function censusgui(callbackarg)
 % The population on April 1, 2010 was 308,745,538, according to:
 % http://www.census.gov/2010census/data/
 
-p = [ 75.995  91.972 105.711 123.203 131.669 150.697 ...
+p = [ 75.995  91.972 105.711 123.203 131.669 50.697 ...
      179.323 203.212 226.505 249.633 281.422 308.746]';
 
 t = (1900:10:2010)';   % Census years
@@ -96,9 +96,9 @@ switch model
       y = NaN*x;
       z = guess;
    case 'polynomial'
-      s = (t-1955)/55;   c = polyfit(s,p,d);
-      s = (x-1955)/55;   y = polyval(c,s);
-      s = (w-1955)/55;   z = polyval(c,s);
+      s = (t-1955)/55;   c = polyfit(s,p,d); disp((sprintf('%.8f', 1955+55*fzero(matlabFunction(poly2sym(c)),1))));
+      s = (x-1955)/55;   y = polyval(c,s); %disp(y);
+      s = (w-1955)/55;   z = polyval(c,s); %disp(z);
    case 'pchip'
       y = pchip(t,p,x);
       z = pchip(t,p,w);
