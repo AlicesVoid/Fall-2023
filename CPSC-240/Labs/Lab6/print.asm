@@ -12,60 +12,58 @@
 ;cout << str1 << ascii;
 
 ; == ASSEMBLY =================================
+
 section .data
-str1    db  "1+2+3+...+99=", 0
-ascii   resb 5              ; Reserve 5 bytes for the ASCII representation of the sum
+str1    db      "1 + 2 + 3 +...+ 99 = ", 0
 
 section .bss
-sum     resw 1              ; Reserve a word (2 bytes) for the sum
+sum     resw    1
+ascii   resb    5
 
 section .text
-global _start
+        global _start
 _start:
-    ; Initialize cx to 1
+    ; calculates 1+2+3+...+99
     mov     cx, 1
-    
-    ; Initialize sum to 0
-    xor     ax, ax
-    mov     [sum], ax
-    
-    ; Calculate 1+2+3+...+99
-calculate_sum:
-    add     [sum], cx        ; sum += cx
-    inc     cx               ; cx++
-    cmp     cx, 100          ; Compare cx with 100
-    jb      calculate_sum    ; If cx < 100, repeat the loop
-    
-    ; Convert sum to ASCII
-    mov     ax, [sum]        ; Move sum into ax
-    mov     rdi, ascii+4     ; Start filling the ASCII buffer from the end
-    add_terminator:
-        mov     byte [rdi], 10 ; Add a newline at the end of the ASCII buffer
-        dec     rdi             ; Move to the previous position
-    convert_to_ascii:
-        xor     dx, dx         ; Clear any previous remainder
-        div     byte [10]      ; Divide ax by 10, result in al, remainder in ah
-        add     dl, '0'        ; Convert the remainder to ASCII
-        mov     [rdi], dl      ; Store the ASCII character
-        dec     rdi            ; Move to the previous position in the ASCII buffer
-        test    ax, ax         ; Check if ax is 0
-        jnz     convert_to_ascii ; If not, continue converting
-    
-    ; Print the expression
-    mov     rax, 1
-    mov     rdi, 1
-    mov     rsi, str1
-    mov     rdx, 14
+next1:
+    add     word[sum], cx          ; sum += cx
+    inc     cx                     ; cx++
+    cmp     cx, 100                ; compare cx with 100
+    jb      next1                  ; if(cx<100) goto next1
+
+    ; convert sum to ASCII
+    mov     rsi, 3                 ; Index for ascii buffer, starting from the end
+    mov     ax, word[sum]          ; Load sum
+    mov     bx, 10                 ; Set divisor
+next2:
+    xor     dx, dx                 ; Clear any previous remainder
+    div     bx                     ; Divide by 10, result in AX, remainder in DX
+    add     dl, '0'                ; Convert to ASCII
+    mov     [ascii+rsi], dl        ; Store ASCII character
+    dec     rsi                    ; Move to next position
+    test    ax, ax                 ; Check if quotient is zero
+    jnz     next2                  ; If not, continue loop
+
+    ; add newline at the end
+    mov     byte [ascii+4], 10     ; Store newline character
+
+    ; cout << str1
+    mov     rax, 1                 ; SYS_write
+    mov     rdi, 1                 ; where to write
+    mov     rsi, str1              ; address of str1
+    mov     rdx, 21                ; characters to write
     syscall
-    
-    ; Print the sum
-    mov     rax, 1
-    mov     rdi, 1
-    lea     rsi, [rdi + 1]   ; rsi points to the first non-zero character in ascii
-    mov     rdx, 5
+
+    ; cout << ascii
+    mov     rax, 1             ; SYS_write
+    mov     rdi, 1             ; where to write
+    lea     rsi, [ascii]       ; address of ascii
+    mov     rdx, 5             ; characters to write (including newline)
     syscall
-    
-    ; Exit the program
-    mov     rax, 60
-    xor     rdi, rdi
-    syscall
+
+
+
+    ; exit program
+    mov     rax, 60                ; terminate executing process
+    xor     rdi, rdi               ; exit status
+    syscall                        ; calling system services

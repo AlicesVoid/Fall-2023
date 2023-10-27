@@ -6,7 +6,7 @@
 ; register char cl = 1;
 ; for(cl=1; cl<=10; cl++)
 ;    sum += cl;
-; ascii = itoa(sum);
+; ascii = itoa(sum); 
 ; cout << str1 << ascii;
 
 section .data
