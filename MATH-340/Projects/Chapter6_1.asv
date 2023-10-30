@@ -1,14 +1,12 @@
 % Homework 6 Part 1: 
 
 % Question 1: 
-%{
-f = @(t)t^(25)*(1-t)^(2);
+f = @(t)(t6)/(3*x-1);
 ab = [0 1];
-err = 8;
+err = 4;
 tol = 10^(-err);
 a = ab(1);b = ab(2);
 quadgui(f, a, b, tol);
-%}
 
 % Question 4: 
 %{
