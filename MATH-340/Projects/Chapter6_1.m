@@ -10,6 +10,33 @@ a = ab(1);b = ab(2);
 quadgui(f, a, b, tol);
 %}
 
+% Question 2: 
+%
+
+%
+
+% Question 3: 
+%
+f = @(x) 2 ./ (1+x.^2);
+trap_vals = zeros(1,16);
+trap_steps = zeros(1,16);
+trap_diff = zeros(1,16);
+%qtx_diff = [];
+fprintf('\n\n');
+fprintf('Actual Pi Value: %.17f\n', pi);
+fprintf('------------------------------\n');
+%figure(1); hold on; 
+for i=1:3:15
+    tol = 10^(-i);
+    [trap_vals(i), trap_steps(i)] = trapezoidal_rule(f, -1, 1, tol);
+    trap_diff(i) = (pi - trap_vals(i));
+    fprintf('Trapezoidal Rule with Tolerance %e:\n', tol);
+    fprintf('------ Number of Steps   : %d\n', trap_steps(i));
+    fprintf('------ Pi Approximation  : %.17f\n', trap_vals(i));
+    fprintf('------ Difference From Pi: %.17f\n\n', trap_diff(i));
+end
+%
+
 % Question 4: 
 %{
 f = @(x) 2 ./ (1+x.^2);
@@ -36,3 +63,5 @@ end
 %figure(1); hold on;
 %plot(10.^(-1:-1:-15), qtx_diff, 'o');
 %}
+
+% Question 6
