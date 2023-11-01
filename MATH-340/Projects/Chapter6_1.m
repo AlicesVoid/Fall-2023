@@ -16,7 +16,7 @@ quadgui(f, a, b, tol);
 %
 
 % Question 3: 
-%
+%{
 f = @(x) 2 ./ (1+x.^2);
 trap_vals = zeros(1,16);
 trap_steps = zeros(1,16);
@@ -35,7 +35,7 @@ for i=1:3:15
     fprintf('------ Pi Approximation  : %.17f\n', trap_vals(i));
     fprintf('------ Difference From Pi: %.17f\n\n', trap_diff(i));
 end
-%
+%}
 
 % Question 4: 
 %{
@@ -65,3 +65,32 @@ end
 %}
 
 % Question 6
+%{
+xx = 0.1:0.1:1;
+yy = erf(xx);
+a = 0;
+f = @(x) exp(-x.^2);
+g = 2/sqrt(pi);
+erf_vals = zeros(1,10);
+erf_diff = zeros(1,10);
+
+for i=1:1:10
+    b = xx(i);
+    erf_vals(i) = g*quadtx(f, a, b);
+    erf_diff(i) = abs((erf(xx(i)) - erf_vals(i)));
+end
+fprintf(['|---ERF---------|---QUADTX------|--DIFFERENCE---|\n']);
+fprintf(['-------------------------------------------------\n']);
+for i=1:1:10
+    fprintf(['|%.13f|%.13f|%.13f|\n'],yy(i), erf_vals(i), erf_diff(i));
+end
+figure(1); clf; hold on; 
+plot(xx, yy, 'r', 'DisplayName', 'Real ERF');
+plot(xx, erf_vals, 'g--', 'DisplayName', 'Tabulated ERF', 'LineWidth',2.0);
+title('Ch6 Question 6: ERF versus Tabulated ERF', 'LineWidth',2.0);
+hold off; 
+legend('Location', 'best');
+figure(2); clf; hold on; 
+plot(xx, erf_diff, 'b');
+title('Ch6 Question 6: Difference between ERF and Tabuated ERF', 'LineWidth',2.0);
+%}
