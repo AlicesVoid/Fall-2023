@@ -24,10 +24,20 @@ if nargin < 4 | isempty(tol)
 end
 
 % Initialization
+if a == -Inf || b == Inf
+    disp('Infinite Bounds Detected, Adjusting Bounds Accordingly');
+    if a == -Inf
+        a = -1e6;
+    end
+    if b == Inf
+        b = 1e6;
+    end
+end 
 c = (a + b)/2;
 fa = F(a,varargin{:});
 fc = F(c,varargin{:});
 fb = F(b,varargin{:});
+
 
 % Recursive call 
 [Q,k] = quadtxstep(F, a, b, tol, fa, fc, fb, varargin{:});
@@ -38,7 +48,7 @@ fcount = k + 3;
 function [Q,fcount] = quadtxstep(F,a,b,tol,fa,fc,fb,varargin)
 
 % Recursive subfunction used by quadtx.
-
+mod = 0;
 h = b - a; 
 c = (a + b)/2;
 fd = F((a+c)/2,varargin{:});
@@ -46,8 +56,13 @@ fe = F((c+b)/2,varargin{:});
 Q1 = h/6 * (fa + 4*fc + fb);
 Q2 = h/12 * (fa + 4*fd + 2*fc + 4*fe + fb);
 if abs(Q2 - Q1) <= tol
-   Q  = Q2 + (Q2 - Q1)/15;
-   fcount = 2;
+   if a == -1e6
+       mod = F(-9e99);
+   elseif b == 1e6
+       mod = F(9e99);       
+   end
+    Q  = (Q2 + (Q2 - Q1)/15) + mod;
+    fcount = 2;
 else
    [Qa,ka] = quadtxstep(F, a, c, tol, fa, fd, fc, varargin{:});
    [Qb,kb] = quadtxstep(F, c, b, tol, fc, fe, fb, varargin{:});
