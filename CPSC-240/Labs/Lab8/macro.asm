@@ -40,147 +40,139 @@
 
 ;== ASSEMBLY =====================================
 
-section .data
-buffer      resb    4
-n           resd    1           ; 4 bytes for an integer
-sumN        resd    1
-msg1        db      "Input a number (001~999): ", 0
-msg2        db      "1 + 2 + 3 +...+ ", 0
-msg3        db      " = ", 0
-ascii       resb    10
-newline     db      10          ; Newline character
+%macro	print 	2
+        mov     rax, 1					;SYS_write
+        mov     rdi, 1					;standard output device
+        mov     rsi, %1					;output string address
+        mov     rdx, %2					;number of characters
+        syscall						;calling system services
+%endmacro
 
+%macro	scan 	2
+        mov     rax, 0					;SYS_read
+        mov     rdi, 0					;standard input device
+        mov     rsi, %1					;input buffer address
+        mov     rdx, %2					;number of characters
+        syscall						;calling system services
+%endmacro
 
+e
 section .bss
-temp        resb    10          ; Temporary buffer for conversion
+buffer  resb    4
+n       resw    1
+sumN    resd    1       ; sumN as double-word (32-bit)
+ascii   resb    10
+ascii2  resb    3       ; 3 characters for n (up to 999)
+
+section .data
+msg1    db  "Input a number (000~999): ", 0
+msg2    db  "1 + 2 + 3 +...+ ", 0
+msg3    db  " = ", 0
 
 section .text
-    global _start
-
+        global _start
 _start:
-    ; Print msg1
-    mov     rsi, msg1
-    mov     rdx, 26
-    call    print
+    print   msg1, 26                ; Print message 1
+    scan    buffer, 4               ; Scan buffer
 
-    ; Scan buffer
-    lea     rsi, [buffer]
-    mov     rdx, 4
-    call    scan
+    ; Convert buffer to integer and store in n
+    mov     ax, 0                   ; Clear ax
+    mov     bx, 10                  ; Set bx = 10 for multiplication
+    mov     rsi, 0                  ; Counter = 0
+inputLoop:
+    and     byte[buffer+rsi], 0fh   ; Convert ASCII to number
+    add     al, byte[buffer+rsi]    ; al = number
+    adc     ah, 0                   ; Adjust carry for ah
+    cmp     rsi, 2                  ; Compare rsi with 2
+    je      skipMul                 ; Skip multiplication if rsi = 2
+    mul     bx                      ; Multiply for conversion
+skipMul:
+    inc     rsi                     ; Increment rsi
+    cmp     rsi, 3                  ; Compare rsi with 3
+    jl      inputLoop               ; Loop if rsi < 3
+    mov     word[n], ax             ; Store converted number in n
 
-    ; Convert buffer to integer (atoi)
-    lea     rsi, [buffer]
-    call    atoi
-    mov     [n], rax            ; Store converted integer in n
+    ; Calculate the arithmetic series sum (1+2+3+...+n)
+    movsx     eax, word[n]            ; Get n into eax
+    mov     ebx, eax                ; Copy n to ebx
+    add     eax, 1                  ; Increment n by 1 (n+1)
+    imul    ebx                     ; Multiply eax (n+1) by ebx (n), result in eax
+    shr     eax, 1                  ; eax = (n * (n + 1)) / 2
+    mov     dword[sumN], eax        ; Store the result in sumN
 
-    ; Initialize sumN to 0
-    mov     dword [sumN], 0
+; converts sumN into ASCII
+; Part A - Successive division
+mov     eax, dword[sumN]           ; Get integer (32-bit from sumN)
+xor     ecx, ecx                   ; digitCount = 0 (clear ecx)
+mov     ebx, 10                    ; Set for dividing by 10
 
-    ; Start counter from 1 for sum calculation
-    mov     ecx, 1
+divideLoop:
+    xor     edx, edx               ; Clear edx (high part of dividend)
+    div     ebx                    ; Divide edx:eax by ebx, quotient in eax, remainder in edx
+    push    rdx                    ; Push remainder (use rdx for 64-bit push)
+    inc     ecx                    ; Increment digitCount
+    test    eax, eax               ; Check if quotient is non-zero
+    jnz     divideLoop             ; If quotient is non-zero, continue loop
 
-sum_loop:
-    cmp     ecx, [n]           ; Compare counter with n
-    jg      end_sum_loop       ; If counter > n, end loop
-    add     [sumN], ecx        ; Add counter to sumN
-    inc     ecx                ; Increment counter
-    jmp     sum_loop
+; Part B - Convert remainders and store
+mov     rbx, ascii                 ; Get addr of ascii
+xor     rdi, rdi                   ; rdi = 0 (clear rdi)
 
-end_sum_loop:
-    ; sumN now contains the sum of numbers from 1 to n
+popLoop:
+    pop     rax                    ; Pop intDigit (use rax for 64-bit pop)
+    add     al, '0'                ; Convert digit to ASCII
+    mov     byte [rbx+rdi], al     ; Store ASCII character
+    inc     rdi                    ; Increment rdi
+    loop    popLoop                ; If (digitCount > 0) goto popLoop
+mov     byte [rbx+rdi], 10         ; Null-terminate the string
 
-    ; Convert sumN to ASCII (itoa)
-    lea     rsi, [sumN]
-    lea     rdi, [ascii]
-    call    itoa
 
-    ; Print msg2
-    mov     rsi, msg2
-    mov     rdx, 16
-    call    print
+; Initialize ascii2 with '0's
+mov     byte [ascii2], '0'
+mov     byte [ascii2+1], '0'
+mov     byte [ascii2+2], '0'
 
-    ; Print buffer (n)
-    mov     rsi, buffer
-    mov     rdx, 3
-    call    print
+; converts n into ASCII
+mov 	ax, word[n] 				;get integer n
+mov 	rcx, 0 					;digitCount = 0
+mov 	bx, 10 					;set for dividing by 10
+cmp     ax, 0                   ;check if n is zero
+je      zeroCase                ;if n is zero, handle separately
+divideLoopN:
+	mov 	dx, 0
+	div 	bx 					;divide n by 10
+	push 	rdx 					;push remainder
+	inc 	rcx 					;increment digitCount
+	test    ax, ax              ;check if quotient is zero
+	jnz     divideLoopN          ;if not zero, continue
+jmp     checkPadding
+zeroCase:
+    push    0                   ; Push zero (for n=0 case)
+    inc     rcx
+checkPadding:
+    cmp     rcx, 3              ; Check if we have less than 3 digits
+    jge     popDigits           ; If 3 or more, start popping
+    push    0                   ; Pad with zero
+    inc     rcx
+    jmp     checkPadding
+popDigits:
+; Convert remainders and store in ASCII format
+mov 	rbx, ascii2 				;get addr of ascii2
+mov 	rdi, 0 					;rdi = 0
+popLoopN:
+	pop 	rax 					;pop intDigit
+	add 	al, "0" 				;al = al + 0x30
+	mov 	byte [rbx+rdi], al 			;ascii2[rdi] = al
+	inc 	rdi 					;increment rdi
+	loop 	popLoopN 				;if (digitCount > 0) goto popLoopN
 
-    ; Print msg3 (including equals sign)
-    mov     rsi, msg3
-    mov     rdx, 3
-    call    print
+noNConversion:
 
-    ; Print ascii (sumN)
-    mov     rsi, ascii
-    mov     rdx, 7
-    call    print
+	print	msg2, 16				;cout << msg2
+    print   ascii2, 3               ; Print the scanned number
+    print   msg3, 3                 ;cout << msg3
+	print	ascii, 7				;cout << ascii
 
-    ; Print newline
-    mov     rsi, newline
-    mov     rdx, 1
-    call    print
-
-    ; Exit program
-    mov     rax, 60
-    xor     rdi, rdi
-    syscall
-
-; Function: print
-print:
-    mov     rax, 1              ; SYS_write
-    mov     rdi, 1              ; File descriptor for stdout
-    syscall
-    ret
-
-; Function: scan
-scan:
-    mov     rax, 0              ; SYS_read
-    mov     rdi, 0              ; File descriptor for stdin
-    syscall
-    ret
-
-atoi:
-    xor     rax, rax            ; Clear rax (result)
-    xor     rcx, rcx            ; Clear rcx (index)
-
-atoi_loop:
-    movzx   rdi, byte [rsi+rcx] ; Load a byte from the string
-    cmp     rdi, '0'
-    jl      atoi_done           ; If less than '0', it's a non-numeric character
-    cmp     rdi, '9'
-    jg      atoi_done           ; If greater than '9', it's a non-numeric character
-    sub     rdi, '0'            ; Convert from ASCII to integer
-    imul    rax, rax, 10        ; Multiply the current result by 10
-    add     rax, rdi            ; Add the new digit
-    inc     rcx                 ; Move to the next character
-    jmp     atoi_loop
-
-atoi_done:
-    ret                         ; Return with the result in rax
-
-itoa:
-    mov     rax, rsi            ; Move the integer to rax
-    mov     rcx, 10             ; Set divisor to 10
-    lea     rdi, [rdi+9]        ; Point rdi to the end of the buffer
-
-reverse_loop:
-    mov     rsi, rdi            ; Save current buffer position
-
-itoa_loop:
-    xor     rdx, rdx            ; Clear rdx
-    div     rcx                 ; Divide rax by 10, result in rax, remainder in rdx
-    add     dl, '0'             ; Convert remainder to ASCII
-    dec     rdi                 ; Move back in the buffer
-    mov     [rdi], dl           ; Store ASCII character
-    test    rax, rax            ; Check if the quotient is zero
-    jnz     itoa_loop           ; If not, continue loop
-
-    ; Adjust the start of the string if necessary
-    cmp     rsi, rdi            ; Compare start and end buffer positions
-    je      itoa_done           ; If equal, the string is at the buffer start
-    movsb                       ; Move string to the start of the buffer
-    jmp     reverse_loop
-
-itoa_done:
-    mov     byte [rsi], 0       ; Null-terminate the string
-    ret
-
+        mov     rax, 60					;terminate program
+        mov     rdi, 0					;exit status
+        syscall						;calling system services
