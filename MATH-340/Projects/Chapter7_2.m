@@ -1,4 +1,4 @@
-% Chapter 7 Part 1 Homework: 
+% Chapter 7 Part 2 Homework: 
 
 % Problem 6:
 %
@@ -27,7 +27,7 @@ fplot(y_ds, [0, 1], 'g','DisplayName', 'dsolve', 'LineWidth',2);
 plot(t_tx, y_tx, 'r.', 'DisplayName', label_tx, 'LineWidth',2);
 plot(t_23, y_23, 'b.', 'DisplayName', label_23, 'LineWidth',2);
 hold off; 
-ttl = title('Amelia Rotondo, 7.6: Comparing ODE Solvers');
+ttl = title('7.6: Comparing ODE Solvers');
 lgd = legend('Location', 'best');
 fontsize(ttl,18,'points');
 fontsize(lgd,14,'points');
