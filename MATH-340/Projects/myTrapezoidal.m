@@ -1,4 +1,4 @@
-function [integral_estimate, steps] = trapezoidal_rule(f, a, b, tolerance)
+function [integral_estimate, steps] = myTrapezoidal(f, a, b, tolerance)
     % f: function handle for the function to be integrated
     % a, b: limits of integration
     % tolerance: tolerance for the error between successive estimates
