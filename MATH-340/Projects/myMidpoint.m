@@ -1,35 +1,21 @@
-function [integral_estimate, steps] = myMidpoint(f, a, b, tolerance)
-    % f: function handle for the function to be integrated
-    % a, b: limits of integration
-    % tolerance: tolerance for the error between successive estimates
+function [t, y] = myMidpoint(odefun, tspan, y0, h)
+    % myMidpoint solves an ODE using the Midpoint method.
+    % odefun - Function handle for the ODE
+    % tspan  - 2-element vector with start and end times
+    % y0     - Initial condition
+    % h      - Step size
 
-    % Initial number of intervals
-    n = 1;
-    h = (b - a) / n;
-    
-    % Initial estimate with the first midpoint
-    integral_old = h * f(a + h/2);
-    
-    steps = 1;
-    while true
-        % Refine the partition by doubling the number of intervals
-        n = n * 2;
-        h = (b - a) / n;
-        
-        % Compute midpoints
-        midpoints = a + h/2 : h : b - h/2;
-        
-        % Compute the integral estimate using the Midpoint Rule
-        integral_new = h * sum(f(midpoints));
-        
-        % Check if the change between successive estimates is within the tolerance
-        if abs(integral_new - integral_old) < tolerance
-            break;
-        end
-        
-        integral_old = integral_new;
-        steps = steps + 1;
+    t = tspan(1):h:tspan(2);
+    if t(end) ~= tspan(2)
+        t = [t tspan(2)];
     end
-    
-    integral_estimate = integral_new;
+    N = length(t);
+    y = zeros(1, N);
+    y(1) = y0;
+
+    for i = 1:N-1
+        k1 = odefun(t(i), y(i));
+        k2 = odefun(t(i) + h/2, y(i) + h/2 * k1);
+        y(i+1) = y(i) + h * k2;
+    end
 end
