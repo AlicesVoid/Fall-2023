@@ -20,13 +20,18 @@
         syscall						;calling system services
 %endmacro
 
-; single-character ascii to unsigned integer macro
-%macro atoi
+; Convert ASCII character to integer
+%macro atoi 2
+    sub %1, '0'      ; Subtract ASCII value of '0' (48) from the ASCII character
+    mov %2, %1       ; Store the result in the destination register
 %endmacro
 
-; single-character unsigned integer to ascii macro
-%macro itoa
+; Convert integer to ASCII character
+%macro itoa 2
+    add %1, '0'      ; Add ASCII value of '0' (48) to the integer
+    mov %2, %1       ; Store the result in the destination register
 %endmacro
+
 
 ; Variable Declarations 
 section .bss
