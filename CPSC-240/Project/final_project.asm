@@ -52,6 +52,7 @@ section .text
 _start:
 
 ; Print msg1
+print msg1, 22
 
 ; Scan the Input String (store it in buffer) 
 
@@ -70,6 +71,9 @@ _start:
 ; Print the Output String 
 
 ; End the Program 
+mov rax, 60
+mov rdi, 0
+syscall
 
 parseLoop:
 ; If the Buffer doesn't have two more characters, stop the parseLoop
