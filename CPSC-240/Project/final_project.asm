@@ -55,6 +55,7 @@ _start:
 print msg1, 22
 
 ; Scan the Input String (store it in buffer) 
+scan buffer, 10
 
 ; Store the Input String with msg2 at the end of it as Output String
 
