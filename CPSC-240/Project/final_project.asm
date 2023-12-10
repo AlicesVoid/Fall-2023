@@ -40,6 +40,7 @@ output resb 18
 total  resw 1
 sign   resw 1
 num    resw 1
+count  resw 1
 
 ; Constant Value Declarations
 section .data
@@ -57,13 +58,56 @@ print msg1, 22
 ; Scan the Input String (store it in buffer) 
 scan buffer, 10
 
-; Store the Input String with msg2 at the end of it as Output String
+; Store the Input String with msg2 at the end of it as the variable Output 
+mov rsi, buffer
+mov rdi, output
+mov rcx, 10
+rep movsb
+
+; Append msg2 to the end of the Output String
+mov rsi, msg2
+mov rcx, 3
+add rdi, 10
+rep movsb
 
 ; Set the Total to Zero 
+mov word [total], 0
 
-; Determine First Character and Add it to Total 
+; Determine First Character of Buffer and Add it to Total 
+; Start the Program 
+section .text
+        global _start
+_start:
+
+; Print msg1
+print msg1, 22
+
+; Scan the Input String (store it in buffer) 
+scan buffer, 10
+
+; Store the Input String with msg2 at the end of it as the variable Output 
+mov rsi, buffer
+mov rdi, output
+mov rcx, 10
+rep movsb
+
+; Append msg2 to the end of the Output String
+mov rsi, msg2
+mov rcx, 3
+add rdi, 10
+rep movsb
+
+; Set the Total to Zero 
+mov word [total], 0
+
+; Determine First Character of Buffer and Add it to Total 
+mov rsi, buffer     ; Load address of buffer into rsi
+mov al, byte [rsi]  ; Load first character from buffer into al
+atoi al, ax         ; Convert ASCII character to integer and store in ax
+add word [total], ax ; Add the converted integer to total
 
 ; Go Through Input Parsing Loop (jump to parseLoop)
+jmp parseLoop
 
 ; Convert the Total to ASCII (jump to totalToASCII)
 
@@ -78,16 +122,35 @@ syscall
 
 parseLoop:
 ; If the Buffer doesn't have two more characters, stop the parseLoop
+parseLoop:
+        ; If the Buffer doesn't have two more characters or count >= 8, stop the parseLoop
+        cmp byte [buffer+2], 0 ; Check if the next two characters are null
+        jz endParseLoop
+        cmp byte [count], 8 ; Check if count >= 8
+        jge endParseLoop
 
-; Grab the Next Two Characters of the Buffer (stored as sign and num)
+        ; Grab the Next Two Characters of the Buffer (stored as sign and num), using Count as the index
+        inc byte [count]                    ; Add 1 to the count variable
+        movzx eax, byte [buffer + count]    ; Load the character at buffer + count into AL
+        mov [sign], al                      ; Store the character in sign
+        inc byte [count]                    ; Add 1 to the count variable
+        movzx eax, byte [buffer + count]    ; Load the next character at buffer + count + 1 into AL
+        mov [num], al                       ; Store the character in num
 
-; Determine if sign is '+' or '-' or '*' or '/' 
+        ; Determine if sign is '+' or '-' or '*' or '/' 
 
-; Determine the Digit of the num (atoi)
+        ; Determine the Digit of the num (atoi)
 
-; Do the sign operation with the num digit onto the Total 
+        ; Do the sign operation with the num digit onto the Total 
 
-; Store the New Total as the Total 
+        ; Store the New Total as the Total         
+
+        jmp parseLoop ; Jump back to the beginning of the parseLoop
+
+endParseLoop:
+        ; Code to execute after the parseLoop ends
+
+
 
 totalToASCII:: 
 
@@ -100,6 +163,7 @@ totalToASCII::
 ; Add the ASCII Value to the end of the Output String
 
 processSign:
+
 ; If the sign is not a valid sign, stop the processSign
 
 ; If the sign is '+', add the num to the total
