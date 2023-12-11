@@ -74,7 +74,7 @@ _start:
         ; Determine First Character of Buffer and Add it to Total 
         mov rsi, buffer     ; Load address of buffer into rsi
         mov al, byte [rsi]  ; Load first character from buffer into al
-        atoi al, ax         ; Convert ASCII character to integer and store in ax
+        atoi al, ax          ; Convert ASCII character to integer and store in ax
         add word [total], ax ; Add the converted integer to total
 
         ; Go Through Input Parsing Loop (jump to parseLoop)
@@ -86,17 +86,19 @@ parseLoop:
         jz endParseLoop
         cmp byte [count], 8 ; Check if count >= 8
         jge endParseLoop
-        
+
         ; Grab the Next Two Characters of the Buffer (stored as sign and num), using Count as the index
         inc byte [count]                    ; Add 1 to the count variable
-        movzx eax, byte [buffer + count]    ; Load the character at buffer + count into AL
-        mov [sign], al                      ; Store the character in sign
-        inc byte [count]                    ; Add 1 to the count variable
-        movzx eax, byte [buffer + count]    ; Load the next character at buffer + count + 1 into AL
-        mov [num], al                       ; Store the character in num
+        movzx eax, byte [buffer + count]
+        mov [sign], al
+        inc byte [count]
+        movzx eax, byte [buffer + count]
+        mov [num], al
 
         ; Determine the Digit of the num (atoi)
-        atoi num, [num]
+        movzx eax, word [num]
+        atoi al, ax
+        mov [num], ax
 
         ; Determine if sign is '+' or '-' or '*' or '/' 
         call processSign
@@ -123,22 +125,31 @@ processSign:
 
 addNumber:
         ; Add num to total
-        add word [total], [num]
+        mov ax, [total]
+        add ax, word [num]
+        mov [total], ax
         ret
 
 subtractNumber:
         ; Subtract num from total
-        sub word [total], [num]
+        mov ax, [total]
+        sub ax, word [num]
+        mov [total], ax
         ret
 
 multiplyNumber:
         ; Multiply total by num
-        imul word [total], [num]
+        mov ax, [total]
+        imul word [num]
+        mov [total], ax
         ret
 
 divideNumber:
         ; Divide total by num (check for divide by zero is omitted)
-        idiv word [total], [num]
+        mov ax, [total]
+        cwd                     ; Convert word to doubleword
+        idiv word [num]
+        mov [total], ax
         ret
 
 totalToASCII:
