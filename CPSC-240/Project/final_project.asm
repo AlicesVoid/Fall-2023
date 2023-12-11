@@ -50,78 +50,41 @@ msg2    db  " = "
 ; Start the Program 
 section .text
         global _start
+
 _start:
 
-; Print msg1
-print msg1, 22
+        ; Print msg1
+        print msg1, 22
 
-; Scan the Input String (store it in buffer) 
-scan buffer, 10
+        ; Scan the Input String (store it in buffer) 
+        scan buffer, 10
 
-; Store the Input String with msg2 at the end of it as the variable Output 
-mov rsi, buffer
-mov rdi, output
-mov rcx, 10
-rep movsb
+        ; Store the Input String with msg2 at the end of it as the variable Output 
+        mov rsi, buffer
+        mov rdi, output
+        mov rcx, 10
+        rep movsb
 
-; Append msg2 to the end of the Output String
-mov rsi, msg2
-mov rcx, 3
-add rdi, 10
-rep movsb
+        ; Append msg2 to the end of the Output String
+        mov rsi, msg2
+        mov rcx, 3
+        add rdi, 10
+        rep movsb
 
-; Set the Total to Zero 
-mov word [total], 0
+        ; Set the Total to Zero 
+        mov word [total], 0
 
-; Determine First Character of Buffer and Add it to Total 
-; Start the Program 
-section .text
-        global _start
-_start:
+        ; Determine First Character of Buffer and Add it to Total 
+        mov rsi, buffer     ; Load address of buffer into rsi
+        mov al, byte [rsi]  ; Load first character from buffer into al
+        atoi al, ax         ; Convert ASCII character to integer and store in ax
+        add word [total], ax ; Add the converted integer to total
 
-; Print msg1
-print msg1, 22
+        ; Go Through Input Parsing Loop (jump to parseLoop)
+        jmp parseLoop
 
-; Scan the Input String (store it in buffer) 
-scan buffer, 10
 
-; Store the Input String with msg2 at the end of it as the variable Output 
-mov rsi, buffer
-mov rdi, output
-mov rcx, 10
-rep movsb
 
-; Append msg2 to the end of the Output String
-mov rsi, msg2
-mov rcx, 3
-add rdi, 10
-rep movsb
-
-; Set the Total to Zero 
-mov word [total], 0
-
-; Determine First Character of Buffer and Add it to Total 
-mov rsi, buffer     ; Load address of buffer into rsi
-mov al, byte [rsi]  ; Load first character from buffer into al
-atoi al, ax         ; Convert ASCII character to integer and store in ax
-add word [total], ax ; Add the converted integer to total
-
-; Go Through Input Parsing Loop (jump to parseLoop)
-jmp parseLoop
-
-; Convert the Total to ASCII (jump to totalToASCII)
-
-; Print a New Line 
-
-; Print the Output String 
-
-; End the Program 
-mov rax, 60
-mov rdi, 0
-syscall
-
-parseLoop:
-; If the Buffer doesn't have two more characters, stop the parseLoop
 parseLoop:
         ; If the Buffer doesn't have two more characters or count >= 8, stop the parseLoop
         cmp byte [buffer+2], 0 ; Check if the next two characters are null
@@ -137,39 +100,56 @@ parseLoop:
         movzx eax, byte [buffer + count]    ; Load the next character at buffer + count + 1 into AL
         mov [num], al                       ; Store the character in num
 
-        ; Determine if sign is '+' or '-' or '*' or '/' 
-
         ; Determine the Digit of the num (atoi)
+        atoi num, [num]
 
-        ; Do the sign operation with the num digit onto the Total 
+        ; Determine if sign is '+' or '-' or '*' or '/' 
+        call processSign
 
-        ; Store the New Total as the Total         
+         
 
-        jmp parseLoop ; Jump back to the beginning of the parseLoop
+        ; Jump back to the beginning of the parseLoop
+        jmp parseLoop 
 
 endParseLoop:
         ; Code to execute after the parseLoop ends
 
+processSign:
 
+        ; If the sign is '+', add the num to the total
+
+        ; If the sign is '-', subtract the num from the total
+
+        ; If the sign is '*', multiply the total by the num
+
+        ; If the sign is '/', divide the total by the num
+
+        ; Store the New Total as the Total        
+
+        ret
 
 totalToASCII:: 
 
-; While the total is not zero, continue converting
+        ; While the total is not zero, continue converting
 
-; Divide the Total by 10 and get the Integer Value 
+        ; Divide the Total by 10 and get the Integer Value 
 
-; Convert that Integer Value to ASCII 
+        ; Convert that Integer Value to ASCII 
 
-; Add the ASCII Value to the end of the Output String
+        ; Add the ASCII Value to the end of the Output String
 
-processSign:
+printResult:
+        ; Convert the Total to ASCII (jump to totalToASCII)
 
-; If the sign is not a valid sign, stop the processSign
+        ; Print a New Line 
 
-; If the sign is '+', add the num to the total
+        ; Print the Output String 
 
-; If the sign is '-', subtract the num from the total
+        ; jump to endProgram
+        jmp endProgram
 
-; If the sign is '*', multiply the total by the num
-
-; If the sign is '/', divide the total by the num
+endProgram:
+        ; End the Program 
+        mov rax, 60
+        mov rdi, 0
+        syscall
