@@ -73,8 +73,10 @@ _start:
 
         ; Determine First Character of Buffer and Add it to Total 
         mov rsi, buffer     ; Load address of buffer into rsi
-        mov al, byte [rsi]  ; Load first character from buffer into al
-        atoi al, ax          ; Convert ASCII character to integer and store in ax
+        movzx eax, byte [rsi]  ; Load first character from buffer into EAX
+        movzx eax, al          ; Move AL (byte-sized) into EAX for consistency
+        atoi al, ax            ; Convert ASCII character to integer and store in AX
+
         add word [total], ax ; Add the converted integer to total
 
         ; Go Through Input Parsing Loop (jump to parseLoop)
@@ -88,19 +90,29 @@ parseLoop:
         jge endParseLoop
 
         ; Grab the Next Two Characters of the Buffer (stored as sign and num), using Count as the index
-        inc byte [count]
-        movzx eax, byte [buffer + count]
-        mov [sign], al
-        inc byte [count]
-        movzx eax, byte [buffer + count]
-        mov [num], al
-        atoi al, ax
-        mov [num], ax
+        inc byte [count]        ; Increment count
+        movzx eax, byte [count] ; Load count into EAX
+        add eax, buffer         ; Add buffer address to EAX to calculate address
+        movzx eax, byte [eax]   ; Load byte from calculated address into EAX
+        mov [sign], al          ; Store AL in sign
+
+        inc byte [count]        ; Increment count
+        movzx eax, byte [count] ; Load count into EAX
+        add eax, buffer         ; Add buffer address to EAX to calculate address
+        movzx eax, byte [eax]   ; Load byte from calculated address into EAX
+        mov [num], al           ; Store AL in num
+
+        movzx eax, al           ; Move AL (byte-sized) into EAX for consistency
+        atoi al, ax             ; Convert ASCII character to integer and store in AX
+        mov [num], ax           ; Store AX in num
+
 
         ; Determine the Digit of the num (atoi)
-        movzx eax, word [num]
-        atoi al, ax
-        mov [num], ax
+        movzx eax, byte [num]   ; Load num into EAX
+        movzx eax, al           ; Move AL (byte-sized) into EAX for consistency
+        atoi al, ax             ; Convert ASCII character to integer and store in AX
+        mov [num], ax           ; Store AX in num
+
 
         ; Determine if sign is '+' or '-' or '*' or '/' 
         call processSign
