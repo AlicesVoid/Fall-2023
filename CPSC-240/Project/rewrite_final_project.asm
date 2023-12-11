@@ -88,12 +88,14 @@ parseLoop:
         jge endParseLoop
 
         ; Grab the Next Two Characters of the Buffer (stored as sign and num), using Count as the index
-        inc byte [count]                    ; Add 1 to the count variable
+        inc byte [count]
         movzx eax, byte [buffer + count]
         mov [sign], al
         inc byte [count]
         movzx eax, byte [buffer + count]
         mov [num], al
+        atoi al, ax
+        mov [num], ax
 
         ; Determine the Digit of the num (atoi)
         movzx eax, word [num]
