@@ -1,0 +1,275 @@
+     1                                 %line 1+1 final.asm
+     2                                 
+     3                                 
+     4                                 
+     5                                 
+     6                                 
+     7                                 
+     8                                 
+     9                                 
+    10                                 
+    11                                 
+    12                                 
+    13                                 
+    14                                 
+    15                                 
+    16                                 
+    17                                 
+    18                                 
+    19                                 
+    20                                 
+    21                                 
+    22                                 
+    23                                 
+    24                                 
+    25                                 
+    26                                 
+    27                                 
+    28                                 
+    29                                 
+    30                                 
+    31                                 
+    32                                 
+    33                                 
+    34                                 
+    35                                 
+    36                                 
+    37                                 
+    38                                 
+    39                                 
+    40                                 
+    41                                 
+    42                                 
+    43                                 
+    44                                 
+    45                                 
+    46                                 
+    47                                 
+    48                                 
+    49                                 
+    50                                 %line 56+1 final.asm
+    51                                 
+    52                                 
+    53                                 %line 65+1 final.asm
+    54                                 
+    55                                 
+    56                                 %line 71+1 final.asm
+    57                                 
+    58                                 
+    59                                 
+    60                                 %line 78+1 final.asm
+    61                                 
+    62                                 [section .bss]
+    63 00000000 <gap>                   num1 resb 1
+    64 00000001 <gap>                   num2 resb 1
+    65 00000002 <gap>                   num3 resb 1
+    66 00000003 <gap>                   result resb 1
+    67 00000004 <gap>                   buffer resb 2
+    68 00000006 <gap>                   ascii resb 4
+    69                                 
+    70                                 [section .data]
+    71 00000000 496E70757420317374-     msg1 db "Input 1st number (0~9): ", 0
+    72 00000000 206E756D6265722028-
+    73 00000000 307E39293A2000     
+    74 00000019 496E70757420326E64-     msg2 db "Input 2nd number (0~9): ", 0
+    75 00000019 206E756D6265722028-
+    76 00000019 307E39293A2000     
+    77 00000032 496E70757420337264-     msg3 db "Input 3rd number (0~9): ", 0
+    78 00000032 206E756D6265722028-
+    79 00000032 307E39293A2000     
+    80 0000004B 726573756C74203D20-     msg4 db "result = ", 0
+    81 0000004B 00                 
+    82                                 
+    83                                 [section .text]
+    84                                 [global _start]
+    85                                 
+    86                                 _start:
+    87                                 
+    88                                 
+    89                                 
+    90                                 
+    91                                 
+    92                                 
+    93 00000000 48C7C001000000          mov rax, 1
+    94                                 %line 103+0 final.asm
+    95 00000007 48C7C701000000          mov rdi, 1
+    96 0000000E 48C7C6[00000000]        mov rsi, msg1
+    97 00000015 48C7C218000000          mov rdx, 24
+    98 0000001C 0F05                    syscall
+    99                                 %line 104+1 final.asm
+   100                                 
+   101                                 
+   102 0000001E 48C7C000000000          mov rax, 0
+   103                                 %line 106+0 final.asm
+   104 00000025 48C7C700000000          mov rdi, 0
+   105 0000002C 48C7C6[00000000]        mov rsi, buffer
+   106 00000033 48C7C202000000          mov rdx, 2
+   107 0000003A 0F05                    syscall
+   108                                 %line 107+1 final.asm
+   109                                 
+   110                                 
+   111 0000003C 660FB60425[00000000]      movzx ax, byte [buffer]
+   112 00000045 2C30                    sub al, '0'
+   113                                 %line 110+0 final.asm
+   114 00000047 660FB6C0                movzx ax, al
+   115                                 %line 111+1 final.asm
+   116 0000004B 880425[00000000]        mov byte [num1], al
+   117                                 
+   118                                 
+   119 00000052 48C7C001000000          mov rax, 1
+   120                                 %line 114+0 final.asm
+   121 00000059 48C7C701000000          mov rdi, 1
+   122 00000060 48C7C6[00000000]        mov rsi, msg2
+   123 00000067 48C7C218000000          mov rdx, 24
+   124 0000006E 0F05                    syscall
+   125                                 %line 115+1 final.asm
+   126                                 
+   127                                 
+   128 00000070 48C7C000000000          mov rax, 0
+   129                                 %line 117+0 final.asm
+   130 00000077 48C7C700000000          mov rdi, 0
+   131 0000007E 48C7C6[00000000]        mov rsi, buffer
+   132 00000085 48C7C202000000          mov rdx, 2
+   133 0000008C 0F05                    syscall
+   134                                 %line 118+1 final.asm
+   135                                 
+   136                                 
+   137 0000008E 660FB60425[00000000]      movzx ax, byte [buffer]
+   138 00000097 2C30                    sub al, '0'
+   139                                 %line 121+0 final.asm
+   140 00000099 660FB6C0                movzx ax, al
+   141                                 %line 122+1 final.asm
+   142 0000009D 880425[00000000]        mov byte [num2], al
+   143                                 
+   144                                 
+   145 000000A4 48C7C001000000          mov rax, 1
+   146                                 %line 125+0 final.asm
+   147 000000AB 48C7C701000000          mov rdi, 1
+   148 000000B2 48C7C6[00000000]        mov rsi, msg3
+   149 000000B9 48C7C218000000          mov rdx, 24
+   150 000000C0 0F05                    syscall
+   151                                 %line 126+1 final.asm
+   152                                 
+   153                                 
+   154 000000C2 48C7C000000000          mov rax, 0
+   155                                 %line 128+0 final.asm
+   156 000000C9 48C7C700000000          mov rdi, 0
+   157 000000D0 48C7C6[00000000]        mov rsi, buffer
+   158 000000D7 48C7C202000000          mov rdx, 2
+   159 000000DE 0F05                    syscall
+   160                                 %line 129+1 final.asm
+   161                                 
+   162                                 
+   163 000000E0 660FB60425[00000000]      movzx ax, byte [buffer]
+   164 000000E9 2C30                    sub al, '0'
+   165                                 %line 132+0 final.asm
+   166 000000EB 660FB6C0                movzx ax, al
+   167                                 %line 133+1 final.asm
+   168 000000EF 880425[00000000]        mov byte [num3], al
+   169                                 
+   170                                 
+   171 000000F6 E850000000              call calculateResult
+   172                                 
+   173                                 
+   174 000000FB 66BB0000                mov bx, 0
+   175 000000FF E870000000              call toString
+   176                                 
+   177                                 
+   178 00000104 48C7C001000000          mov rax, 1
+   179                                 %line 143+0 final.asm
+   180 0000010B 48C7C701000000          mov rdi, 1
+   181 00000112 48C7C6[00000000]        mov rsi, msg4
+   182 00000119 48C7C209000000          mov rdx, 9
+   183 00000120 0F05                    syscall
+   184                                 %line 144+1 final.asm
+   185                                 
+   186                                 
+   187 00000122 48C7C001000000          mov rax, 1
+   188                                 %line 146+0 final.asm
+   189 00000129 48C7C701000000          mov rdi, 1
+   190 00000130 48C7C6[00000000]        mov rsi, ascii
+   191 00000137 48C7C204000000          mov rdx, 4
+   192 0000013E 0F05                    syscall
+   193                                 %line 147+1 final.asm
+   194                                 
+   195                                 
+   196 00000140 48C7C03C000000          mov rax, 60
+   197 00000147 48C7C700000000          mov rdi, 0
+   198 0000014E 0F05                    syscall
+   199                                 
+   200                                 calculateResult:
+   201                                 
+   202 00000150 660FB60425[00000000]      movzx ax, byte [num1]
+   203 00000159 660FB61C25[00000000]      movzx bx, byte [num2]
+   204 00000162 66F7EB                  imul bx
+   205                                 
+   206                                 
+   207 00000165 660FB61C25[00000000]      movzx bx, byte [num3]
+   208 0000016E 6601D8                  add ax, bx
+   209                                 
+   210                                 
+   211                                 
+   212 00000171 880425[00000000]        mov [result], al
+   213                                 
+   214 00000178 C3                      ret
+   215                                 
+   216                                 toString:
+   217 00000179 660FB60425[00000000]      movzx ax, byte [result]
+   218 00000182 4831C9                  xor rcx, rcx
+   219 00000185 48C7C7[00000000]        mov rdi, ascii
+   220                                 
+   221                                 
+   222 0000018C 6685C0                  test ax, ax
+   223 0000018F 7518                    jnz convertLoop
+   224                                 
+   225 00000191 C60425[00000000]30      mov byte [ascii], '0'
+   226 00000199 C60425[01000000]0A      mov byte [ascii+1], 0x0A
+   227 000001A1 C60425[02000000]00      mov byte [ascii+2], 0
+   228 000001A9 EB22                    jmp endToString
+   229                                 
+   230                                 convertLoop:
+   231                                 
+   232 000001AB 6631D2                  xor dx, dx
+   233 000001AE 66BB0A00                mov bx, 10
+   234 000001B2 66F7F3                  div bx
+   235                                 
+   236                                 
+   237 000001B5 80C230                  add dl, '0'
+   238 000001B8 88140F                  mov [rdi + rcx], dl
+   239 000001BB 48FFC1                  inc rcx
+   240                                 
+   241                                 
+   242 000001BE 6685C0                  test ax, ax
+   243 000001C1 75E6                    jnz convertLoop
+   244                                 
+   245                                 
+   246                                 
+   247 000001C3 48FFC1                  inc rcx
+   248 000001C6 C6040F0A                mov byte [rdi + rcx], 0x0A
+   249 000001CA E8FCFFFFFF              call reverseString
+   250                                 
+   251                                 endToString:
+   252 000001CF C3                      ret
+   253                                 
+   254                                 reverseString:
+   255                                 
+   256 000001D0 48FFC9                  dec rcx
+   257 000001D3 48C7C6[00000000]        mov rsi, ascii
+   258 000001DA 488D7C0EFF              lea rdi, [rsi + rcx - 1]
+   259                                 
+   260                                 reverseLoop:
+   261 000001DF 4839FE                  cmp rsi, rdi
+   262 000001E2 7D0E                    jge endReverse
+   263                                 
+   264 000001E4 8A06                    mov al, [rsi]
+   265 000001E6 8A1F                    mov bl, [rdi]
+   266 000001E8 881E                    mov [rsi], bl
+   267 000001EA 8807                    mov [rdi], al
+   268                                 
+   269 000001EC 48FFC6                  inc rsi
+   270 000001EF 48FFCF                  dec rdi
+   271                                 
+   272 000001F2 EBE9                    jmp reverseLoop
+   273                                 
+   274                                 endReverse:
+   275 000001F4 C3                      ret
